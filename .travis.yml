@@ -5,9 +5,10 @@ python:
 - '3.5'
 - '3.6'
 install:
+- pip install .
 - pip install -r requirements
-- python3 setup.py install
-- echo "import homer;conf = homer.Config(app='test')" | python3
+- python setup.py install
+- echo "import homer;conf = homer.Config(app='test')" | python
 script:
 - gunzip ./test/performance.gz
 - python ./test/loadtest.py
