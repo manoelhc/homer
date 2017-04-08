@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Manoel's machine
+
+test/testgen.py
+
