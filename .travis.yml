@@ -4,7 +4,7 @@ python:
 - '3.4'
 - '3.5'
 - '3.6'
-before_deploy:
+install:
 - pip install -r requirements
 - python3 setup.py install
 - echo "import homer;conf = homer.Config(app='test')" | python3
@@ -12,8 +12,3 @@ script:
 - gunzip ./test/performance.gz
 - python ./test/loadtest.py
 - python ./test/dumptest.py
-after_success:
-- codeclimate-test-reporter
-- bash <(curl -s https://codecov.io/bash)
-- coveralls
-- codecov
