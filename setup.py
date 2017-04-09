@@ -16,7 +16,7 @@ setup(
     download_url = 'https://github.com/manoelhc/homer', # I'll explain this in a second
     keywords = ['testing', 'configuration'], # arbitrary keywords
     install_requires=[
-        'Crypto'
+        'pycrypto'
     ],
     classifiers = [
         'Development Status :: 3 - Alpha',
