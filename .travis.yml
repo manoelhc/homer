@@ -3,6 +3,8 @@ python:
 - '3.4'
 install:
 - pip install .
+- pip install -r requirements
+- python setup.py install
 - echo "import homer;conf = homer.Config(app='test')" | python
 script:
 - gunzip ./test/performance.gz
