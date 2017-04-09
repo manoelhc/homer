@@ -91,4 +91,5 @@ ENV/
 # Manoel's machine
 
 test/testgen.py
-
+MANIFEST
+*Vagrant*
