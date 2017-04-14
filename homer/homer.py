@@ -5,6 +5,7 @@ import os
 import string
 import base64
 import hashlib
+import ujson
 from Crypto.Cipher import AES
 from Crypto import Random
 
@@ -31,6 +32,11 @@ class Config:
             self._app = __name__
         else:
             self._app = kwargs['app']
+
+        if 'crypto' not in kwargs:
+            self._crypto = True
+        else:
+            self._crypto = kwargs['crypto']
 
         if 'secret_key' not in kwargs:
             self._secret_key = 'please_set_a_secret_key_instead_of_me'
@@ -59,19 +65,26 @@ class Config:
 
     # AES encrypt function
     def _encrypt(self, data):
-        raw = self.str_to_bytes(data)
-        raw = raw + (32 - len(raw) % 32) * self.str_to_bytes(chr(32 - len(raw) % 32))
-        iv = Random.new().read(AES.block_size)
-        cipher = AES.new(self._secret_key, AES.MODE_CBC, iv)
-        return base64.b64encode(iv + cipher.encrypt(raw)).decode('utf-8')
+        json = ujson.dumps(data)
+        if self._crypto:
+            raw = self.str_to_bytes(json)
+            raw = raw + (32 - len(raw) % 32) * self.str_to_bytes(chr(32 - len(raw) % 32))
+            iv = Random.new().read(AES.block_size)
+            cipher = AES.new(self._secret_key, AES.MODE_CBC, iv)
+            return base64.b64encode(iv + cipher.encrypt(raw)).decode('utf-8')
+        return base64.b64encode(self.str_to_bytes(json)).decode('utf-8')
+
 
     # AES decrypt function
     def _decrypt(self, data):
         enc = base64.b64decode(data)
-        iv = enc[:AES.block_size]
-        cipher = AES.new(self._secret_key, AES.MODE_CBC, iv)
-        d = cipher.decrypt(enc[AES.block_size:]).decode('utf-8')
-        return d[:-ord(d[len(d)-1:])]
+        if self._crypto:
+            iv = enc[:AES.block_size]
+            cipher = AES.new(self._secret_key, AES.MODE_CBC, iv)
+            d = cipher.decrypt(enc[AES.block_size:]).decode('utf-8')
+            json = d[:-ord(d[len(d)-1:])]
+            return ujson.loads(json)
+        return ujson.loads(enc)
 
     # Return the database file name
     def get_db_filename(self):
