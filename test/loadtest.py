@@ -4,7 +4,7 @@ import os
 import homer
 import yaml
 
-conf = homer.Config(app="test")
+conf = homer.Config(app="test", secret_key='1')
 conf.reset()
 path = os.path.dirname(__file__)
 stream = open('{}/performance'.format(path), 'r')
