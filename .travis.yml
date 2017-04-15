@@ -12,6 +12,6 @@ install:
 - echo "import homer;conf = homer.Config(app='test')" | python
 script:
 - gunzip ./test/performance.gz
-- python ./test/loadtest.py
-- python ./test/loadtest_nc.py
-- python ./test/dumptest.py
+- time python ./test/loadtest.py
+- time python ./test/loadtest_nc.py
+- time python ./test/dumptest.py
