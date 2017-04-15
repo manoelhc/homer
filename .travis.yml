@@ -13,4 +13,5 @@ install:
 script:
 - gunzip ./test/performance.gz
 - python ./test/loadtest.py
+- python ./test/loadtest_nc.py
 - python ./test/dumptest.py
